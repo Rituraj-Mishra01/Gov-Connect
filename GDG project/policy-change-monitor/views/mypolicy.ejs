@@ -1,0 +1,41 @@
+<%- include('partials/head') %>
+    <link rel="stylesheet" href="/mypolicy.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <div class="main-content">
+        <div class="header">
+            <h1 class="page-title">My Policy Updates</h1>
+            
+            <div style="color: #666;">
+                User: <b>Demo User</b>
+                <div style="margin-top: 10px; font-size: 0.95rem;">
+                    Based on your preference 
+                    <a href="/preferences" class="btn-link">Change Preference</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="policy-grid">
+            <% policies.forEach((policy)=>{ %>
+            <div class="card">
+                <span class="card-tag"><%=policy.ministry%></span>
+                <span class="card-date"><%=policy.createdAt.toISOString().split('T')[0]%></span>
+                <h3><%=policy.title%></h3>
+                <p><a href="<%=policy.url%>" target="_blank" style="color: rgb(236, 117, 117);">Click here to see official press release.</a></p>
+                <a class="btn-summary" href="/mypolicy/readsummary/<%=policy._id%>">Read AI Summary</a>
+            </div>
+            <%})%>
+
+        </div>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2026 GovConnect BY Ultimate Coders. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // --- JAVASCRIPT ---
+    </script>
+</body>
+</html>

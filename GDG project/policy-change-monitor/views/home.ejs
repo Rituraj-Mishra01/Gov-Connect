@@ -1,0 +1,121 @@
+<%- include('partials/head') %>
+    <link rel="stylesheet" href="/home.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <main class="hero-container">
+        <h1 class="hero-title">Government Policy Updates</h1>
+        <p class="hero-subtitle">Get changes in policies/ updates and their impact with AI powered analysis first.</p>
+
+        <div class="search-wrapper">
+            <input type="text" class="search-input" id="mainSearch" placeholder="Search for ministry...">
+            <button class="search-btn" onclick="searchByMinistry()">Search</button>
+        </div>
+
+        <div class="ministry-filter">
+            <label for="ministrySelect" class="filter-label">Filter by Ministry:</label>
+            <select id="ministrySelect" class="ministry-dropdown" onchange="filterByMinistry()">
+                <option value="">All Ministries</option>
+                <option value="Ministry of Education">Ministry of Education</option>
+                <option value="Ministry of Agriculture">Ministry of Agriculture</option>
+                <option value="Ministry of Finance">Ministry of Finance</option>
+                <option value="Ministry of Health">Ministry of Health</option>
+                <option value="Ministry of Labour">Ministry of Labour</option>
+                <option value="Ministry of Environment">Ministry of Environment</option>
+                <option value="Ministry of IT">Ministry of IT</option>
+                <option value="Ministry of Home Affairs">Ministry of Home Affairs</option>
+                <option value="Ministry of Commerce">Ministry of Commerce</option>
+                <option value="Ministry of Defense">Ministry of Defense</option>
+                <option value="Ministry of Transport">Ministry of Transport</option>
+                <option value="Ministry of Energy">Ministry of Energy</option>
+                <option value="Ministry of Culture">Ministry of Culture</option>
+                <option value="Ministry of Science and Technology">Ministry of Science and Technology</option>
+                <option value="Ministry of Social Justice">Ministry of Social Justice</option>
+                <option value="Ministry of Tourism">Ministry of Tourism</option>
+                <option value="Ministry of Urban Development">Ministry of Urban Development</option>
+                <option value="Ministry of Rural Development">Ministry of Rural Development</option>
+            </select>
+        </div>
+        <div class="policies">
+            <h2 class="section-title" style="padding: 20px; margin: 20px; ">Recent Policy Changes</h2>
+            <div class="policies-grid">
+                <!-- expects array of policies from model -->
+                <% policies.forEach((policy)=>{ %> 
+                    <div class="card">
+                        <span class="card-tag"><%=policy.ministry%></span>
+                        <span class="card-date"><%=policy.createdAt.toISOString().split('T')[0]%></span>
+                        <h3 class="card-title"><%=policy.title%></h3>
+                        <p> <a href="<%=policy.url%>" target="_blank" style="color: rgb(236, 117, 117);">Click here to see official press release.</a></p>
+                        <a class="btn-summary" href="/mypolicy/readsummary/<%=policy._id%>">Read AI Summary</a>
+                    </div>
+                <%})%>
+                
+            </div>
+
+        </div>
+    </main>
+    <footer class="footer">
+        <p>&copy; 2026 GovConnect BY Ultimate Coders. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // --- JAVASCRIPT ---
+
+        // 2. Function to simulate search action
+        function performSearch() {
+            const query = document.getElementById('mainSearch').value;
+            if(query.trim() === "") {
+                alert("Please enter a topic to search.");
+                return;
+            }
+            
+            // For Hackathon Demo: Log to console or alert
+            // In real app: window.location.href = `search_results.html?q=${query}`;
+        }
+        function searchByMinistry(){
+            const search = document.getElementById('mainSearch').value
+            const cards = document.querySelectorAll('.card');
+            const select = document.getElementById('ministrySelect')
+            if(search === ''){
+                select.value = ''
+            }
+            cards.forEach(card => {
+                let cardTitle = card.querySelector('.card-title').textContent.trim();
+                let cardTag = card.querySelector('.card-tag').textContent.trim();
+                cardTitle = cardTitle.toLowerCase();
+                
+                if (search === '' || cardTitle.includes(search.toLowerCase())||cardTag.toLowerCase().includes(search.toLowerCase())) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // 4. Enter Key Listener for Search
+        document.getElementById('mainSearch').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                searchByMinistry();
+            }
+        });
+
+        // 5. Filter policies by ministry
+        function filterByMinistry() {
+            const selectedMinistry = document.getElementById('ministrySelect').value;
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                let cardTag = card.querySelector('.card-tag').textContent.trim();
+                cardTag = cardTag.toLowerCase();
+                
+                if (selectedMinistry === '' || cardTag===selectedMinistry.toLowerCase()) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

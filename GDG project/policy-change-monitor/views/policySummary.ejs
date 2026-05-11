@@ -1,0 +1,117 @@
+<%- include('partials/head') %>
+    <link rel="stylesheet" href="/policySummary.css">
+</head>
+<body>
+    <!-- HEADER/NAVIGATION -->
+    <%- include('partials/header') %>
+
+    <!-- MAIN CONTENT -->
+    <main class="policy-summary-container">
+        <div class="summary-header">
+            <h1 class="policy-title">Policy Summary</h1>
+        </div>
+
+        <div class="summary-card">
+            <!-- Policy Metadata -->
+            <div class="metadata">
+                <div class="meta-item">
+                    <span class="meta-label">Ministry/Department:</span>
+                    <span class="meta-value" id="ministry"><%=policy.ministry%></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Date:</span>
+                    <span class="meta-value" id="date"><%=policy.createdAt.toISOString().split('T')[0]%></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Source:</span>
+                    <a href="<%=policy.url%>" id="sourceLink" target="_blank" class="meta-link">View Official Press Release</a>
+                </div>
+            </div>
+
+            <!-- Policy Title -->
+            <div class="policy-details">
+                <h2 id="policyTitle" class="policy-main-title"><%=policy.title%></h2>
+                
+                <!-- AI Summary Section -->
+                <div class="summary-section">
+                    <div class="section-header">
+                        <h3>AI-Generated Summary</h3>
+                        <span class="ai-badge">🤖 AI Summary</span>
+                    </div>
+                    <div class="summary-content" id="summaryText">
+                        <%=policy.summary%>
+                    </div>
+                </div>
+
+                <!-- Key Points -->
+                <!-- <div class="summary-section">
+                    <h3>Key Points</h3>
+                    <ul class="key-points" id="keyPoints">
+                        <li>Loading key points...</li>
+                    </ul>
+                </div> -->
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="saveSummary()">📌 Save to My Policy</button>
+                <button class="btn btn-secondary" onclick="shareSummary()">🔗 Share</button>
+                <button class="btn btn-secondary" onclick="printSummary()">🖨️ Print</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>&copy; 2026 GovConnect BY Ultimate Coders. All rights reserved.</p>
+    </footer>
+    <script>
+        
+        // This would be populated by backend data
+        // For now, placeholder data structure
+
+        // Populate page with data
+        //function loadPolicyData() {
+            //document.getElementById('policyTitle').textContent = policyData.title;
+            //document.getElementById('ministry').textContent = policyData.ministry;
+            //document.getElementById('date').textContent = policyData.publishedAt;
+            //document.getElementById('summaryText').textContent = policyData.summary;
+            //document.getElementById('originalText').textContent = policyData.description;
+            //document.getElementById('sourceLink').href = policyData.url;
+            
+            // Load key points
+            // const keyPointsList = document.getElementById('keyPoints');
+            // keyPointsList.innerHTML = '';
+            // policyData.keyPoints.forEach(point => {
+            //     const li = document.createElement('li');
+            //     li.textContent = point;
+            //     keyPointsList.appendChild(li);
+            // });
+        //}
+
+        function saveSummary() {
+            alert('Policy saved to your collection!');
+        }
+
+        function shareSummary() {
+            const text = `Check out this policy: ${policyData.title}`;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'GovConnect',
+                    text: text,
+                    url: window.location.href
+                });
+            } else {
+                alert('Share: ' + text);
+            }
+        }
+
+        function printSummary() {
+            window.print();
+        }
+
+        // Load data when page loads
+        //window.addEventListener('DOMContentLoaded', loadPolicyData);
+    </script>
+</body>
+</html>

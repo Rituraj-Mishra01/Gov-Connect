@@ -1,0 +1,83 @@
+<%- include('partials/head') %>
+    <link rel="stylesheet" href="factcheck.css">
+</head>
+<body>
+
+    <%- include('partials/header') %>
+
+    <div class="container">
+        <div class="check-box">
+            <h1>Verify Government Information</h1>
+            <p class="subtitle">Paste a URL, message forward, or policy text below to check its authenticity using AI.</p>
+            <form action="/factcheck/verify" method="POST">
+            <textarea id="inputText" name="toverify" placeholder="Paste the text or link here... e.g. 'Government is giving free laptops to all students...'"></textarea>
+            
+            <div class="action-row">
+                <button class="btn-clear" onclick="document.getElementById('inputText').value = ''">Clear</button>
+                <button type="submit" class="btn-verify" >Verify Now</button>
+            </div>
+            </form>
+            <%if(verified==='true'){ %>
+            <div class="result-section">
+                <div class="status-card">
+                    <div class="status-header">
+                        <span class="status-icon">✓</span>
+                        <span class="status-text">AI Verification Result</span>
+                    </div>
+                    <p class="verification-text"><%=aiText%></p>
+                    <div class="disclaimer-box">
+                        <strong>⚠️ Disclaimer:</strong> The Gemini AI version being used is older and might not give accurate responses for current policies. Please verify with official government sources for the most up-to-date information.
+                    </div>
+                    <div class="result-footer">
+                        <span class="source-label">Source: Gemini AI</span>
+                    </div>
+                </div>
+            </div>
+            <%}%>
+        </div>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2026 GovConnect BY Ultimate Coders. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function checkAuthenticity() {
+            const input = document.getElementById('inputText').value;
+            const resultDiv = document.getElementById('resultContainer');
+
+            if(input.trim() === "") { alert("Please enter text to check."); return; }
+
+            // Loading State
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<p style="text-align:center; color:#666;">Analyzing source with Official Database...</p>';
+
+            // MOCK LOGIC for DEMO:
+            // If text contains "fake", "free", or "scheme", mark as FAKE.
+            // Otherwise, mark as TRUE.
+            setTimeout(() => {
+                const isFake = input.toLowerCase().includes("free") || input.toLowerCase().includes("fake");
+                
+                if (isFake) {
+                    showResult(false, 85, "This information does not match any official press release. It is likely a scam/rumor.");
+                } else {
+                    showResult(true, 92, "This matches a recent notification from the Ministry of Information.");
+                }
+            }, 1500); // 1.5s simulated delay for realism
+        }
+
+        function showResult(isTrue, confidence, reason) {
+            const resultDiv = document.getElementById('resultContainer');
+            const color = isTrue ? '#c8e6c9' : '#ffcdd2';
+            const label = isTrue ? 'Verified Authentic' : 'Likely Misinformation';
+            const textClass = isTrue ? 'true-text' : 'fake-text';
+            const statusClass = isTrue ? 'status-true' : 'status-fake';
+            const icon = isTrue ? '✔' : '✖';
+
+            resultDiv.innerHTML = `
+                
+            `;
+        }
+    </script>
+
+</body>
+</html>

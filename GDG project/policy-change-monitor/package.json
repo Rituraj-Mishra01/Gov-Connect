@@ -1,0 +1,32 @@
+{
+  "name": "policy-change-monitor",
+  "version": "1.0.0",
+  "description": "a new project  This automated app monitors government policy sites and summarizes the changes made if any in simple phrases",
+  "homepage": "https://github.com/Ashwin-Dixit/policy-change-monitor#readme",
+  "bugs": {
+    "url": "https://github.com/Ashwin-Dixit/policy-change-monitor/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ashwin-Dixit/policy-change-monitor.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.13.2",
+    "cheerio": "^1.1.2",
+    "diff": "^8.0.2",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.2.1",
+    "mongoose": "^9.1.2",
+    "node-cron": "^4.2.1"
+  }
+}

@@ -1,0 +1,144 @@
+<%- include('partials/head')%>
+    <link rel="stylesheet" href="/preferences.css">
+</head>
+<body>
+    <!-- HEADER/NAVIGATION -->
+    <%- include('partials/header') %>
+
+    <!-- MAIN CONTENT -->
+    <main class="preferences-container">
+        <div class="preferences-header">
+            <h1>Your Preferences</h1>
+            <p class="subtitle">Select the ministries and policy areas you want to follow</p>
+            <% if(saved) { %>
+                <p style="color: rgb(134, 240, 134); padding: 10px; margin: 10px;"> Preferences saved successfully!</p>
+
+            <% } %>
+            <%if(preferences.length > 0){ %>
+                <h3 style="padding: 10px; margin: 10px;">Current Preferences:</h3>
+                <%preferences.forEach((pref)=>{%>
+                    <span class="tag"><%=pref%></span>
+                <%})%>
+            <%} %>
+        </div>
+
+        <div class="preferences-card">
+            <!-- Selected Preferences Summary -->
+            <div class="selected-summary">
+                <h3>Selected Preferences</h3>
+                <div class="selected-tags" id="selectedTags">
+                    <p style="color: #888; font-size: 0.9rem;">No preferences selected yet</p>
+                </div>
+            </div>
+
+            <!-- Ministry Selection Form -->
+            <form id="preferencesForm" action="/preferences" method="POST">
+                <div class="form-section">
+                    <h2>Select Ministries</h2>
+                    <p class="section-description">Choose one or more ministries to receive updates from:</p>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item" onclick="clearPreferences()">
+                            <input
+                                type="checkbox"
+                                name="ministry"
+                                value="showall"
+                                class="showall-checkbox"
+                            >
+                            <span class="checkbox-label">
+                                Show All
+                            </span>
+                        </label>
+
+                        <!-- Ministry Options -->
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="clearPreferences()">Clear All</button>
+                    <button type="submit" class="btn btn-primary">Save Preferences</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>&copy; 2026 GovConnect BY Ultimate Coders. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const form = document.getElementById('preferencesForm');
+
+        //rendering checkboxes dynamically
+        const ministries = ['Ministry of Education', 'Ministry of Agriculture', 
+                            'Ministry of Finance', 'Ministry of Health', 
+                            'Ministry of Labour', 'Ministry of Environment', 
+                            'Ministry of IT', 'Ministry of Home Affairs', 
+                            'Ministry of Commerce', 'Ministry of Defense', 
+                            'Ministry of Urban Development', 'Ministry of Railways'
+                        ];
+
+        const container = document.querySelector('.checkbox-grid');
+
+        ministries.forEach(ministry => {
+            const label = document.createElement('label');
+            label.className = 'checkbox-item';
+
+            const input = document.createElement('input');
+            input.type = 'checkbox';
+            input.name = 'ministry';
+            input.value = ministry;
+            input.className = 'ministry-checkbox';
+
+            const spanLabel = document.createElement('span');
+            spanLabel.className = 'checkbox-label';
+
+            spanLabel.append(` ${ministry}`);
+
+            label.appendChild(input);
+            label.appendChild(spanLabel);
+
+            container.appendChild(label);
+        });
+
+        const checkboxes = document.querySelectorAll('.ministry-checkbox');
+        const selectedTagsContainer = document.getElementById('selectedTags');
+        // Update selected tags display
+        function updateSelectedTags() {
+            const selectedMinistries = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+
+            if (selectedMinistries.length === 0) {
+                selectedTagsContainer.innerHTML = '<p style="color: #888; font-size: 0.9rem;">No preferences selected yet</p>';
+            } else {
+                selectedTagsContainer.innerHTML = selectedMinistries
+                    .map(ministry => `<span class="tag">${ministry}</span>`)
+                    .join('');
+            }
+        }
+        // Add event listeners to checkboxes
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                // Uncheck "Show All" if any other checkbox is selected
+                const showAllCheckbox = document.querySelector('.showall-checkbox');
+                if (checkbox.value !== 'showall' && checkbox.checked) {
+                    showAllCheckbox.checked = false;
+                }
+                updateSelectedTags();
+            });
+        });
+
+        // Clear all selections
+        function clearPreferences() {
+            checkboxes.forEach(cb => cb.checked = false);
+            updateSelectedTags();
+        }
+
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', updateSelectedTags);
+    </script>
+</body>
+</html>
